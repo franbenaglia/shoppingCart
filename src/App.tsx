@@ -4,6 +4,7 @@ import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
 import Page from './pages/Page';
 import StripePage from './pages/StripePage';
+import { ShoppingCartProvider } from './contexts/ShoppingCartContext';
 
 /* Core CSS required for Ionic components to work properly */
 import '@ionic/react/css/core.css';
@@ -34,28 +35,60 @@ import '@ionic/react/css/palettes/dark.system.css';
 
 /* Theme variables */
 import './theme/variables.css';
+import ShoppingCart from './pages/ShoppingCart';
+import CheckoutPage from './pages/CheckoutPage';
+import ProductPage from './pages/ProductPage';
+import ProductListPage from './pages/ProductListPage';
+import { useCookies } from 'react-cookie';
+import { setGoogleJwtToken } from './helpers/AuthHelper';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+
+  const [cookies] = useCookies(['googleJwtToken']);
+
+  if (cookies.googleJwtToken) {
+    setGoogleJwtToken(cookies.googleJwtToken)
+  }
+  
   return (
     <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonRouterOutlet id="main">
-            <Route path="/" exact={true}>
-              <Redirect to="/folder/Inbox" />
-            </Route>
-            <Route path="/Stripe" exact={true}>
-              <StripePage />
-            </Route>
-            <Route path="/folder/:name" exact={true}>
-              <Page />
-            </Route>
-          </IonRouterOutlet>
-        </IonSplitPane>
-      </IonReactRouter>
+      <ShoppingCartProvider>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            <Menu />
+            <IonRouterOutlet id="main">
+              <Route path="/" exact={true}>
+                <Redirect to="/folder/Inbox" />
+              </Route>
+              <Route path="/ShoppingCart" exact={true}>
+                <ShoppingCart />
+              </Route>
+              <Route path="/Checkout" exact={true}>
+                <CheckoutPage />
+              </Route>
+              <Route path="/Stripe" exact={true}>
+                <StripePage />
+              </Route>
+              {
+                //<Route path="/Product/:productId" exact={true}>
+                //  <ProductPage />
+                //</Route>
+              }
+              <Route path="/Product" exact={true}>
+                <ProductPage />
+              </Route>
+              <Route path="/ProductList" exact={true}>
+                <ProductListPage />
+              </Route>
+              <Route path="/folder/:name" exact={true}>
+                <Page />
+              </Route>
+            </IonRouterOutlet>
+          </IonSplitPane>
+        </IonReactRouter>
+      </ShoppingCartProvider>
     </IonApp>
   );
 };

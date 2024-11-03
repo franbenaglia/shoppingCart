@@ -11,7 +11,7 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { archiveOutline, archiveSharp, bookmarkOutline, heartOutline, heartSharp, mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp, trashOutline, trashSharp, warningOutline, warningSharp } from 'ionicons/icons';
+import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp } from 'ionicons/icons';
 import './Menu.css';
 
 interface AppPage {
@@ -31,6 +31,30 @@ const appPages: AppPage[] = [
   {
     title: 'Stripe',
     url: '/Stripe',
+    iosIcon: mailOutline,
+    mdIcon: mailSharp
+  },
+  {
+    title: 'ShoppingCart',
+    url: '/ShoppingCart',
+    iosIcon: mailOutline,
+    mdIcon: mailSharp
+  },
+  {
+    title: 'Checkout',
+    url: '/Checkout',
+    iosIcon: mailOutline,
+    mdIcon: mailSharp
+  },
+  {
+    title: 'Product',
+    url: '/Product',
+    iosIcon: mailOutline,
+    mdIcon: mailSharp
+  },
+  {
+    title: 'ProductList',
+    url: '/ProductList',
     iosIcon: mailOutline,
     mdIcon: mailSharp
   },

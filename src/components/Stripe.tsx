@@ -30,19 +30,23 @@ const CheckoutForm = () => {
             return;
         }
 
-        // Create the PaymentIntent and obtain clientSecret from your server endpoint
+        // Create the PaymentIntent and obtain clientSecret from your server endpoint (necessary?)
+        //TODO watch this
+        
+        /*
         const res = await fetch('/create-intent', {
             method: 'POST',
         });
 
         const { client_secret: clientSecret } = await res.json();
+        */
 
         const { error } = await stripe.confirmPayment({
             //`Elements` instance that was used to create the Payment Element
             elements,
-            clientSecret,
+            clientSecret: 'sk_test_51PuNtUFLZ0CBWG9HbQ9vOPlskdUjWyXYSuDnFFYe3t94hKovTD5FSjXrEW8F6K0bLpCEFyeWrjBz036cjxI26X5z00gAFfLydm',
             confirmParams: {
-                return_url: 'https://example.com/order/123/complete',
+                return_url: 'http://localhost:8100',
             },
         });
 
@@ -70,7 +74,7 @@ const CheckoutForm = () => {
     );
 };
 
-const stripePromise = loadStripe('pk_test_6pRNASCoBOKtIshFeQd4XMUh');
+const stripePromise = loadStripe('pk_test_51PuNtUFLZ0CBWG9HXEqXEGIel2qw3i8a0zxacrXtu1ELzshyyYWZn3xoS7p1PoZnq1m0nfVyvYLObyRT7UUJO3Ru00xxzWGUdo');
 
 const options: StripeElementsOptions | undefined = {
     mode: 'payment',
