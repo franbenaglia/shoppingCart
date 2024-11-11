@@ -11,85 +11,47 @@ import {
 } from '@ionic/react';
 
 import { useLocation } from 'react-router-dom';
-import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp } from 'ionicons/icons';
 import './Menu.css';
+import { getUser } from '../api/UserApi';
+import { useState } from 'react';
+import { AppPages } from '../constants/appPages';
 
-interface AppPage {
-  url: string;
-  iosIcon: string;
-  mdIcon: string;
-  title: string;
-}
-
-const appPages: AppPage[] = [
-  {
-    title: 'Inbox',
-    url: '/folder/Inbox',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'Stripe',
-    url: '/Stripe',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'ShoppingCart',
-    url: '/ShoppingCart',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'Checkout',
-    url: '/Checkout',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'Product',
-    url: '/Product',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'ProductList',
-    url: '/ProductList',
-    iosIcon: mailOutline,
-    mdIcon: mailSharp
-  },
-  {
-    title: 'Outbox',
-    url: '/folder/Outbox',
-    iosIcon: paperPlaneOutline,
-    mdIcon: paperPlaneSharp
-  }
-];
 
 const Menu: React.FC = () => {
+
   const location = useLocation();
 
-  return (
-    <IonMenu contentId="main" type="overlay">
-      <IonContent>
-        <IonList id="inbox-list">
-          <IonListHeader>Inbox</IonListHeader>
-          <IonNote>hi@ionicframework.com</IonNote>
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
-                  <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
-        </IonList>
+  let [userlogged, setUserlogged] = useState({ login: 'Anonimo' });
 
-      </IonContent>
-    </IonMenu>
-  );
+  const MenuList = () => {
+
+    return (
+      <IonMenu contentId="main" type="overlay">
+        <IonContent>
+          <IonList id="inbox-list">
+            <IonListHeader>Options</IonListHeader>
+            <IonNote>{userlogged ? userlogged.login : ''}</IonNote>
+            {AppPages.map((appPage, index) => {
+              return (
+                <IonMenuToggle key={index} autoHide={false}>
+                  <IonItem className={location.pathname === appPage.url ? 'selected' : ''} routerLink={appPage.url} routerDirection="none" lines="none" detail={false}>
+                    <IonIcon aria-hidden="true" slot="start" ios={appPage.iosIcon} md={appPage.mdIcon} />
+                    <IonLabel>{appPage.title}</IonLabel>
+                  </IonItem>
+                </IonMenuToggle>
+              );
+            })}
+          </IonList>
+        </IonContent>
+      </IonMenu>
+    );
+
+  }
+
+   return (
+      <MenuList/>
+    );
+
 };
 
 export default Menu;

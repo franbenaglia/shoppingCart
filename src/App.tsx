@@ -1,4 +1,4 @@
-import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
+import { IonApp, IonMenu, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
@@ -40,27 +40,42 @@ import CheckoutPage from './pages/CheckoutPage';
 import ProductPage from './pages/ProductPage';
 import ProductListPage from './pages/ProductListPage';
 import { useCookies } from 'react-cookie';
-import { setGoogleJwtToken } from './helpers/AuthHelper';
+import { isLoggedIn, setGoogleJwtToken, getGoogleJwtToken } from './helpers/AuthHelper';
+import LoginPage from './pages/LoginPage';
+import LogoutPage from './pages/LogoutPage';
+import { useEffect, useState } from 'react';
+import Login from './components/Login';
 
 setupIonicReact();
 
 const App: React.FC = () => {
+
+  let [renderMenu, setRenderMenu] = useState(true);
 
   const [cookies] = useCookies(['googleJwtToken']);
 
   if (cookies.googleJwtToken) {
     setGoogleJwtToken(cookies.googleJwtToken)
   }
-  
+
+  const logged = async () => {
+    const islog = await isLoggedIn();
+    setRenderMenu(islog);
+  }
+
+  useEffect(() => {
+    logged();
+  }, []);
+
   return (
     <IonApp>
       <ShoppingCartProvider>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            <Menu />
+            {renderMenu ? <Menu /> : <Login />}
             <IonRouterOutlet id="main">
               <Route path="/" exact={true}>
-                <Redirect to="/folder/Inbox" />
+                <Redirect to="/" />
               </Route>
               <Route path="/ShoppingCart" exact={true}>
                 <ShoppingCart />
@@ -82,6 +97,12 @@ const App: React.FC = () => {
               <Route path="/ProductList" exact={true}>
                 <ProductListPage />
               </Route>
+              <Route path="/Login" exact={true}>
+                <LoginPage />
+              </Route>
+              <Route path="/Logout" exact={true}>
+                <LogoutPage />
+              </Route>
               <Route path="/folder/:name" exact={true}>
                 <Page />
               </Route>
@@ -91,6 +112,7 @@ const App: React.FC = () => {
       </ShoppingCartProvider>
     </IonApp>
   );
+
 };
 
 export default App;

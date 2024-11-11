@@ -7,6 +7,7 @@ import {
     useStripe,
     useElements,
 } from '@stripe/react-stripe-js';
+import { paymentIntent } from '../api/StripeApi';
 
 const CheckoutForm = () => {
 
@@ -30,21 +31,12 @@ const CheckoutForm = () => {
             return;
         }
 
-        // Create the PaymentIntent and obtain clientSecret from your server endpoint (necessary?)
-        //TODO watch this
-        
-        /*
-        const res = await fetch('/create-intent', {
-            method: 'POST',
-        });
-
-        const { client_secret: clientSecret } = await res.json();
-        */
+        const clientSecret = await paymentIntent(100, 'usd');        
 
         const { error } = await stripe.confirmPayment({
             //`Elements` instance that was used to create the Payment Element
             elements,
-            clientSecret: 'sk_test_51PuNtUFLZ0CBWG9HbQ9vOPlskdUjWyXYSuDnFFYe3t94hKovTD5FSjXrEW8F6K0bLpCEFyeWrjBz036cjxI26X5z00gAFfLydm',
+            clientSecret: clientSecret.data,
             confirmParams: {
                 return_url: 'http://localhost:8100',
             },

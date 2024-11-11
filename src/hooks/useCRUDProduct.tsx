@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Product } from "../model/Product";
 import { useState } from "react";
+import { getGoogleJwtToken } from "../helpers/AuthHelper";
 
 const URL_RESOURCE_SERVER = 'http://localhost:3000';
 const baseURL = URL_RESOURCE_SERVER + "/product/";
@@ -11,8 +12,17 @@ const useCRUDProduct = () => {
     const [product, setProduct] = useState<Product>(null);
 
     const handleCreate = async (newData: Product) => {
+
+        const token = await getGoogleJwtToken();
+
         try {
-            await axios.post(baseURL, { newData });
+            await axios.post(baseURL, newData, {
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json',
+                    //'crossorigin': true,
+                }
+            });
         } catch (error) {
             console.error('Error creating data:', error);
         }
@@ -21,8 +31,7 @@ const useCRUDProduct = () => {
     const fetchAllData = async () => {
         try {
             const response = await axios.get(baseURL);
-            setProducts(response.data);
-            return products;
+            return response.data;
         } catch (error) {
             console.error('Error fetching data:', error);
         }
