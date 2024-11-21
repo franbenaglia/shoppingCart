@@ -23,6 +23,24 @@ const Menu: React.FC = () => {
 
   let [userlogged, setUserlogged] = useState({ login: 'Anonimo' });
 
+  /*
+  const [toggle, setToggle] = useState(true);
+
+  const customRoute = (appPage: any) => {
+
+    let newurl = appPage.url;
+
+    if (appPage.url === '/ProductList') {
+      setToggle(!toggle);
+      newurl = '/ProductList/' + toggle;
+    }
+
+    return newurl;
+
+  }
+
+  */
+
   const MenuList = () => {
 
     return (
@@ -48,9 +66,9 @@ const Menu: React.FC = () => {
 
   }
 
-   return (
-      <MenuList/>
-    );
+  return (
+    <MenuList />
+  );
 
 };
 

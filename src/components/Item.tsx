@@ -4,7 +4,9 @@ import {
     IonCardHeader,
     IonCardTitle,
     IonCardSubtitle,
-    IonButton
+    IonButton,
+    IonImg,
+    IonThumbnail
 } from '@ionic/react';
 import { useContext } from 'react';
 import { CartContext } from './../contexts/ShoppingCartContext';
@@ -13,21 +15,25 @@ import { Link } from 'react-router-dom';
 
 
 
-const Item: React.FC = ({ visible, product, editable }: ItemProps) => {
+const Item: React.FC = ({ visible, product, editable, quantity }: ItemProps) => {
 
     const { addItemToCart, deleteItemToCart } = useContext(CartContext);
 
     return (
         <IonCard color="light">
-            <img alt={product.name} src={product.imgUrl} />
+            {product.imageDataBase64 && (
+                <IonThumbnail>
+                    <img alt={product.name} src={product.imageDataBase64} ></img>
+                </IonThumbnail>
+            )}
             <IonCardHeader>
-                <IonCardTitle>{product.name}</IonCardTitle>
-                <IonCardSubtitle>{product.price}</IonCardSubtitle>
+                <IonCardTitle>{'Product: ' + product.name} {quantity ? ' Items: ' + quantity : ''}</IonCardTitle>
+                <IonCardSubtitle>{'Price: ' + product.price}</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>{product.description}</IonCardContent>
             {visible && <IonButton onClick={() => addItemToCart(product)}>Add Product</IonButton>}
             {visible && <IonButton onClick={() => deleteItemToCart(product)}>Delete Product</IonButton>}
-            {editable && <Link to={{ pathname: '/Product', state: { product } }}>Edit Product</Link>}
+            {editable && <Link to={'/Product/' + product._id}>Edit Product</Link>}
         </IonCard>
     );
 

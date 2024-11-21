@@ -4,6 +4,8 @@ import './Page.css';
 
 const StripePage: React.FC = () => {
 
+    const amount: any = 100;
+
     return (
         <IonPage>
             <IonHeader>
@@ -21,7 +23,7 @@ const StripePage: React.FC = () => {
                         <IonTitle size="large">Stripe</IonTitle>
                     </IonToolbar>
                 </IonHeader>
-                <StripeComponent />
+                <StripeComponent {...amount}/>
             </IonContent>
         </IonPage>
     );

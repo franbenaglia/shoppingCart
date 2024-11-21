@@ -1,28 +1,33 @@
 import axios from "axios";
 import { Product } from "../model/Product";
-import { useState } from "react";
+//import { useState } from "react";
 import { getGoogleJwtToken } from "../helpers/AuthHelper";
+import { usePhotoGallery } from "./usePhotoGallery";
 
 const URL_RESOURCE_SERVER = 'http://localhost:3000';
 const baseURL = URL_RESOURCE_SERVER + "/product/";
 
-const useCRUDProduct = () => {
+const useCRUDProductb = () => {
 
-    const [products, setProducts] = useState<Product[]>(null);
-    const [product, setProduct] = useState<Product>(null);
+    //const [product, setProduct] = useState<Product>(null);
+
+    const { setPhotos } = usePhotoGallery();
 
     const handleCreate = async (newData: Product) => {
 
         const token = await getGoogleJwtToken();
 
         try {
+
             await axios.post(baseURL, newData, {
                 headers: {
                     'Authorization': 'Bearer ' + token,
                     'Content-Type': 'application/json',
-                    //'crossorigin': true,
                 }
             });
+
+            setPhotos(null);
+
         } catch (error) {
             console.error('Error creating data:', error);
         }
@@ -56,8 +61,8 @@ const useCRUDProduct = () => {
     const fetchDataById = async (id: number) => {
         try {
             const response = await axios.get(baseURL + id);
-            setProduct(response.data);
-            return product;
+            //setProduct(response.data);
+            return response.data;
         } catch (error) {
             console.error('Error fetching data:', error);
         }
@@ -76,4 +81,4 @@ const useCRUDProduct = () => {
 
 }
 
-export default useCRUDProduct;
+export default useCRUDProductb;

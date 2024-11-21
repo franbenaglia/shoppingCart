@@ -2,16 +2,18 @@ import axios from "axios";
 
 const URL_RESOURCE_SERVER = 'http://localhost:3000';
 
-//returns client secret
 export const paymentIntent = async (amount: number, currency: string) => {
 
     try {
-        return await axios.post(URL_RESOURCE_SERVER + "/payment/paymentintent", {
-            amount: amount,
+        const intent = await axios.post(URL_RESOURCE_SERVER + "/payment/paymentintent", {
+            amount: amount * 100,
             currency: currency
         });
+
+        return intent;
+
     } catch (error) {
-        console.error('Error creating data:', error);
+        console.error('Error getting client secret:', error);
     }
 
 }

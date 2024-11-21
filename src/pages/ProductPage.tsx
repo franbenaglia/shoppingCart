@@ -2,16 +2,21 @@ import { IonButtons, IonContent, IonHeader, IonMenuButton, IonPage, IonTitle, Io
 import ProductComponent from '../components/ProductComponent';
 import './Page.css';
 import { Product } from '../model/Product';
+import { useParams } from 'react-router-dom'
 
 const ProductPage: React.FC = ({ props }: any) => {
 
     //const productId = props.match.params.productId;
     //const p = location.state.product;
-    let p : any;
-    if (props && props.location) {
-        p = props.location.state.product;
-    }
+    //let p : any;
+    //if (props && props.location) {
+    //    p = props.location.state.product;
+    //}
     //const product: any = {} as Product;
+
+    const productId = useParams();
+
+    console.log('ProductId: ' + productId);
 
     return (
         <IonPage>
@@ -30,7 +35,7 @@ const ProductPage: React.FC = ({ props }: any) => {
                         <IonTitle size="large">Product</IonTitle>
                     </IonToolbar>
                 </IonHeader>
-                <ProductComponent {...p} />
+                <ProductComponent {...productId} />
             </IonContent>
         </IonPage>
     );

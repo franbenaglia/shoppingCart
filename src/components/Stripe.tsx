@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { loadStripe, Stripe, StripeElementsOptions } from '@stripe/stripe-js';
 import {
@@ -8,6 +8,9 @@ import {
     useElements,
 } from '@stripe/react-stripe-js';
 import { paymentIntent } from '../api/StripeApi';
+import { CartContext } from '../contexts/ShoppingCartContext';
+import { IonButton } from '@ionic/react';
+const URL_CLIENT = 'http://localhost:8100/SuccessPayment';
 
 const CheckoutForm = () => {
 
@@ -15,6 +18,8 @@ const CheckoutForm = () => {
     const elements = useElements();
 
     const [errorMessage, setErrorMessage] = useState(null);
+
+    const { totalPrice } = useContext(CartContext);
 
     const handleSubmit = async (event: any) => {
         event.preventDefault();
@@ -31,14 +36,16 @@ const CheckoutForm = () => {
             return;
         }
 
-        const clientSecret = await paymentIntent(100, 'usd');        
+        const amount = totalPrice();
+
+        const clientSecret = await paymentIntent(amount, 'usd');
 
         const { error } = await stripe.confirmPayment({
             //`Elements` instance that was used to create the Payment Element
             elements,
             clientSecret: clientSecret.data,
             confirmParams: {
-                return_url: 'http://localhost:8100',
+                return_url: URL_CLIENT,
             },
         });
 
@@ -57,9 +64,9 @@ const CheckoutForm = () => {
     return (
         <form onSubmit={handleSubmit}>
             <PaymentElement />
-            <button type="submit" disabled={!stripe || !elements}>
-                Pay
-            </button>
+            <IonButton type="submit" disabled={!stripe || !elements}>
+                PAY
+            </IonButton>
             {/* Show error message to your customers */}
             {errorMessage && <div>{errorMessage}</div>}
         </form>
@@ -68,7 +75,7 @@ const CheckoutForm = () => {
 
 const stripePromise = loadStripe('pk_test_51PuNtUFLZ0CBWG9HXEqXEGIel2qw3i8a0zxacrXtu1ELzshyyYWZn3xoS7p1PoZnq1m0nfVyvYLObyRT7UUJO3Ru00xxzWGUdo');
 
-const options: StripeElementsOptions | undefined = {
+const options: StripeElementsOptions = {
     mode: 'payment',
     amount: 1099,
     currency: 'usd',
@@ -83,5 +90,3 @@ export const StripeComponent = () => (
         <CheckoutForm />
     </Elements>
 );
-
-//ReactDOM.render(<App />, document.body);

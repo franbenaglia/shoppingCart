@@ -45,12 +45,17 @@ import LoginPage from './pages/LoginPage';
 import LogoutPage from './pages/LogoutPage';
 import { useEffect, useState } from 'react';
 import Login from './components/Login';
+import { ProductProvider } from './contexts/ProductContext';
+import SuccessPaymentPage from './pages/SuccessPaymentPage';
+import { SaleProvider } from './contexts/SaleContext';
 
 setupIonicReact();
 
 const App: React.FC = () => {
 
   let [renderMenu, setRenderMenu] = useState(true);
+
+  let [refreshList, setRefreshList] = useState(false);
 
   const [cookies] = useCookies(['googleJwtToken']);
 
@@ -69,47 +74,52 @@ const App: React.FC = () => {
 
   return (
     <IonApp>
-      <ShoppingCartProvider>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            {renderMenu ? <Menu /> : <Login />}
-            <IonRouterOutlet id="main">
-              <Route path="/" exact={true}>
-                <Redirect to="/" />
-              </Route>
-              <Route path="/ShoppingCart" exact={true}>
-                <ShoppingCart />
-              </Route>
-              <Route path="/Checkout" exact={true}>
-                <CheckoutPage />
-              </Route>
-              <Route path="/Stripe" exact={true}>
-                <StripePage />
-              </Route>
-              {
-                //<Route path="/Product/:productId" exact={true}>
-                //  <ProductPage />
-                //</Route>
-              }
-              <Route path="/Product" exact={true}>
-                <ProductPage />
-              </Route>
-              <Route path="/ProductList" exact={true}>
-                <ProductListPage />
-              </Route>
-              <Route path="/Login" exact={true}>
-                <LoginPage />
-              </Route>
-              <Route path="/Logout" exact={true}>
-                <LogoutPage />
-              </Route>
-              <Route path="/folder/:name" exact={true}>
-                <Page />
-              </Route>
-            </IonRouterOutlet>
-          </IonSplitPane>
-        </IonReactRouter>
-      </ShoppingCartProvider>
+      <SaleProvider>
+        <ProductProvider>
+          <ShoppingCartProvider>
+            <IonReactRouter>
+              <IonSplitPane contentId="main">
+                {renderMenu ? <Menu /> : <Login />}
+                <IonRouterOutlet id="main">
+                  <Route path="/" exact={true}>
+                    <Redirect to="/" />
+                  </Route>
+                  <Route path="/ShoppingCart" exact={true}>
+                    <ShoppingCart />
+                  </Route>
+                  <Route path="/Checkout" exact={true}>
+                    <CheckoutPage />
+                  </Route>
+                  <Route path="/Stripe" exact={true}>
+                    <StripePage />
+                  </Route>
+                  <Route path="/SuccessPayment" exact={true}>
+                    <SuccessPaymentPage />
+                  </Route>
+                  <Route path="/Product/:productId" exact={true}>
+                    <ProductPage />
+                  </Route>
+                  <Route path="/Product" exact={true}>
+                    <ProductPage />
+                  </Route>
+                  <Route path="/ProductList" exact={true}>
+                    <ProductListPage />
+                  </Route>
+                  <Route path="/Login" exact={true}>
+                    <LoginPage />
+                  </Route>
+                  <Route path="/Logout" exact={true}>
+                    <LogoutPage />
+                  </Route>
+                  <Route path="/folder/:name" exact={true}>
+                    <Page />
+                  </Route>
+                </IonRouterOutlet>
+              </IonSplitPane>
+            </IonReactRouter>
+          </ShoppingCartProvider>
+        </ProductProvider>
+      </SaleProvider>
     </IonApp>
   );
 

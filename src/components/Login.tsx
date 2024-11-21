@@ -1,9 +1,8 @@
-import { useContext, useEffect, useState } from 'react';
-import useCRUDProduct from '../hooks/useCRUDProduct';
 import { useForm, SubmitHandler } from "react-hook-form";
 import { IonButton, IonInput, IonItem, IonList, IonInputPasswordToggle, IonIcon } from '@ionic/react';
 import { User } from '../model/User';
-import { login, googleOauth2Login, githubOauth2Login } from '../helpers/AuthHelper';
+import { googleOauth2Login, githubOauth2Login } from '../helpers/AuthHelper';
+import { login } from "../api/UserApi";
 
 
 const Login: React.FC = () => {

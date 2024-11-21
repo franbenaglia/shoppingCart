@@ -3,39 +3,6 @@ import axios from 'axios';
 import { User } from '../model/User';
 //TODO PASS TO ENVIRONMENT
 const URL_RESOURCE_SERVER = 'http://localhost:3000';
-const baseURL = URL_RESOURCE_SERVER + "/api/v1/auth";
-
-export const registerUser = async (user: User) => {
-    //const body = JSON.stringify(user);
-    try {
-        await axios.post(baseURL + '/register', { user }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': '*',
-                'Access-Control-Allow-Origin': '*'
-            }
-        });
-    } catch (error) {
-        console.error('Error creating data:', error);
-    }
-};
-
-export const login = async (user: User) => {
-    //const body = JSON.stringify(user);
-    try {
-        await axios.post(baseURL + '/login', { user }, {
-            headers: {
-                'Content-Type': 'application/json',
-                'Access-Control-Allow-Headers': '*',
-                'Access-Control-Allow-Methods': '*',
-                'Access-Control-Allow-Origin': '*'
-            }
-        });
-    } catch (error) {
-        console.error('Error creating data:', error);
-    }
-};
 
 export const logout = async () => {
     await removeGoogleJwtToken();

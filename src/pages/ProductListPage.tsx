@@ -11,35 +11,23 @@ import {
     IonToolbar,
 
 } from '@ionic/react';
-import useCRUDProduct from '../hooks/useCRUDProduct';
-import { useEffect, useState } from 'react';
-import { Product } from '../model/Product';
+import { useContext } from 'react';
 import Item from '../components/Item';
+import { ProductContext } from '../contexts/ProductContext';
 
 
 const ProductListPage: React.FC = () => {
 
-    const { fetchAllData } = useCRUDProduct();
-
-    const [products, setProducts] = useState<Product[]>([]);
-
-    const fetchProducts = async () => {
-        const data = await fetchAllData();
-        setProducts(data);
-    }
-
-    useEffect(() => {
-        fetchProducts();
-    }, []);
+    const { getProducts } = useContext(ProductContext);
 
     const List = () => {
 
-        if (products && products.length > 0) {
+        if (getProducts() && getProducts().length > 0) {
 
             return (
                 <IonList>
                     <IonListHeader>Products</IonListHeader>
-                    {products && products.map((product, idx) => {
+                    {getProducts() && getProducts().map((product, idx) => {
                         let ips: any = { visible: false, product: product, editable: true };
                         return <Item {...ips} key={idx} />;
                     })}
