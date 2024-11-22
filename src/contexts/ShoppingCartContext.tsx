@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 import { ItemsProduct } from './../model/ItemsProduct';
 import { Product } from "../model/Product";
 import { Preferences } from '@capacitor/preferences';
@@ -12,6 +12,18 @@ export const ShoppingCartProvider = ({ children }) => {
   const [cart, setCart] = useState([] as ItemsProduct[]);
 
   //const [idSale, setIdSale] = useState(null);
+
+  const fetchItems = async () => {
+    const items = (await Preferences.get({ key: CHECKOUT_LIST })).value;
+    if (items) {
+      const it: ItemsProduct[] = JSON.parse(items);
+      setCart(it);
+    }
+  }
+
+  useEffect(() => {
+    fetchItems();
+  }, []);
 
   const checkOutList = () => cart.filter((c: ItemsProduct) => c.quantity > 0);
 

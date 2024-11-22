@@ -18,7 +18,7 @@ const ItemList: React.FC = () => {
             <IonListHeader>Products, amount: {totalPrice()}</IonListHeader>
             {getProducts().map((product, idx) => {
                 const ips: any = { visible: true, product: product, editable: false };
-                return <Item {...ips} />;
+                return <Item {...ips} key={idx} />;
             })}
         </IonList>
     );

@@ -8,7 +8,7 @@ interface AppPage {
 import { mailOutline, mailSharp, paperPlaneOutline, paperPlaneSharp } from 'ionicons/icons';
 
 export const AppPages: AppPage[] = [
-    {
+    /*{
         title: 'Inbox',
         url: '/folder/Inbox',
         iosIcon: mailOutline,
@@ -17,6 +17,13 @@ export const AppPages: AppPage[] = [
     {
         title: 'Stripe',
         url: '/Stripe',
+        iosIcon: mailOutline,
+        mdIcon: mailSharp
+    },
+    */
+    {
+        title: 'Purchased',
+        url: '/Purchased',
         iosIcon: mailOutline,
         mdIcon: mailSharp
     },

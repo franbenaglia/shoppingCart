@@ -12,7 +12,7 @@ export const handleCreate = async (newData: Product) => {
 
     try {
 
-        await axios.post(baseURL, newData, {
+        return await axios.post(baseURL, newData, {
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
@@ -21,6 +21,7 @@ export const handleCreate = async (newData: Product) => {
 
     } catch (error) {
         console.error('Error creating data:', error);
+        return error;
     }
 };
 
@@ -35,17 +36,19 @@ export const fetchAllData = async () => {
 
 export const handleUpdate = async (updatedData: Product) => {
     try {
-        await axios.put(baseURL, { updatedData });
+        return await axios.put(baseURL, { updatedData });
     } catch (error) {
         console.error('Error updating data:', error);
+        return error;
     }
 };
 
 export const handleDelete = async (id: number) => {
     try {
-        await axios.delete(baseURL + id);
+        return await axios.delete(baseURL + id);
     } catch (error) {
         console.error('Error deleting data:', error);
+        return error;
     }
 };
 

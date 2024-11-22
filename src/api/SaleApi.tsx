@@ -6,6 +6,17 @@ const URL_RESOURCE_SERVER = 'http://localhost:3000';
 const baseURL = URL_RESOURCE_SERVER + "/sales/";
 
 
+export const fetchAllData = async () => {
+    try {
+        const response = await axios.get(baseURL);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return error;
+    }
+};
+
+
 export const proceedCheckOut = async (newData: Sale) => {
 
     const token = await getGoogleJwtToken();

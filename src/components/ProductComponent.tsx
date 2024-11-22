@@ -9,21 +9,20 @@ import { Product } from '../model/Product';
 import { usePhotoGallery, UserPhoto } from '../hooks/usePhotoGallery';
 import { camera } from 'ionicons/icons';
 import { ProductContext } from '../contexts/ProductContext';
+import { Toast } from '@capacitor/toast';
 
-//import { Buffer } from 'buffer';
-
-type Inputs = {
-    name: string,
-    price: number,
-    description: string,
-    imageDataBase64: string | Blob,
+const showToast = async (message: string) => {
+    await Toast.show({
+        text: message,
+        position: 'top'
+    });
 };
 
 const ProductComponent: React.FC = ({ productId }: any) => {
 
     const [photoToDelete, setPhotoToDelete] = useState<UserPhoto>();
 
-    const { register, handleSubmit, watch, formState: { errors } } = useForm<Inputs>();
+    const { register, handleSubmit, watch, formState: { errors } } = useForm<Product>();
 
     const [prod, setProd] = useState<Product>();
 
@@ -42,7 +41,7 @@ const ProductComponent: React.FC = ({ productId }: any) => {
         }
     }, []);
 
-    const onSubmit: SubmitHandler<Inputs> = data => { //TODO replace Inputs for Product
+    const onSubmit: SubmitHandler<Product> = async (data) => { 
 
         if (photos && photos.length > 0) {
             data.imageDataBase64 = photos[0].webviewPath;
@@ -50,15 +49,30 @@ const ProductComponent: React.FC = ({ productId }: any) => {
 
 
         if (!productId) {
-            handleCreate(data as Product);
+            const r = await handleCreate(data as Product);
+            if (r.status == 200) {
+                showToast(r.data.message);
+            } else {
+                showToast('Some error occurred while creating product');
+            }
         } else {
-            handleUpdate(data as Product);
+            const r = await handleUpdate(data as Product);
+            if (r.status == 200) {
+                showToast(r.data.message);
+            } else {
+                showToast('Some error occurred while updating product');
+            }
         }
 
     }
 
-    const deleteProduct = () => {
-        handleDelete(productId);
+    const deleteProduct = async () => {
+        const r = await handleDelete(productId);
+        if (r.status == 200) {
+            showToast(r.data.message);
+        } else {
+            showToast('Some error occurred while deleting product');
+        }
     }
 
     //console.log(watch("example"))
@@ -95,7 +109,7 @@ const ProductComponent: React.FC = ({ productId }: any) => {
                 {prod && prod.imageDataBase64 && (
                     <IonItem>
                         <IonCol size="6">
-                            <IonImg src={prod.imageDataBase64} />
+                            <IonImg src={prod.imageDataBase64 as string} />
                         </IonCol>
                     </IonItem>
                 )}

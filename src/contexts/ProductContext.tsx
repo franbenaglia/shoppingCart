@@ -6,7 +6,17 @@ import {
 } from '../api/ProductApi';
 import { Product } from "../model/Product";
 
-export const ProductContext = createContext(null);
+export interface ProductContextI {
+
+    handleCreate: (newData: Product) => Promise<any>,
+    handleDelete: (id: number) => Promise<any>,
+    handleUpdate: (newData: Product) => Promise<any>,
+    fetchProductById: (id: number) => Promise<any>,
+    getProducts: () => ProductStock[],
+
+}
+
+export const ProductContext = createContext<ProductContextI>(null);
 
 export const ProductProvider = ({ children }) => {
 
@@ -26,16 +36,19 @@ export const ProductProvider = ({ children }) => {
     }, []);
 
     const handleCreate = async (newData: Product) => {
-        await create(newData);
+        const p = await create(newData);
         await fetchProducts();
+        return p;
     };
     const handleDelete = async (id: number) => {
-        await del(id)
+        const p = await del(id)
         await fetchProducts();
+        return p;
     };
     const handleUpdate = async (newData: Product) => {
-        await update(newData);
+        const p = await update(newData);
         await fetchProducts();
+        return p;
     };
     const fetchProductById = (id: number) => fetchById(id);
 

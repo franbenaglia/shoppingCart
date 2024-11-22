@@ -61,7 +61,7 @@ const Checkout: React.FC = () => {
             <IonListHeader>Products, amount: {totalPrice()}</IonListHeader>
             {clist && clist.map((ip, idx) => {
                 const ips: any = { visible: false, product: ip.product, quantity: ip.quantity };
-                return <Item {...ips} />;
+                return <Item {...ips} key={idx} />;
             })}
             {clist && clist.length > 0 &&
                 <IonItem>

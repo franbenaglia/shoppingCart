@@ -48,6 +48,7 @@ import Login from './components/Login';
 import { ProductProvider } from './contexts/ProductContext';
 import SuccessPaymentPage from './pages/SuccessPaymentPage';
 import { SaleProvider } from './contexts/SaleContext';
+import PurchasedPage from './pages/PurchasedPage';
 
 setupIonicReact();
 
@@ -101,6 +102,9 @@ const App: React.FC = () => {
                   </Route>
                   <Route path="/Product" exact={true}>
                     <ProductPage />
+                  </Route>
+                  <Route path="/Purchased" exact={true}>
+                    <PurchasedPage />
                   </Route>
                   <Route path="/ProductList" exact={true}>
                     <ProductListPage />

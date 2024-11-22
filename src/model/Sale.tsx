@@ -2,7 +2,7 @@ import { ItemsProduct } from "./ItemsProduct";
 import { User } from "./User";
 
 export class Sale {
-    itemProducts: ItemsProduct[];
+    itemsProduct: ItemsProduct[];
     user: User;
     transactionId: String;
     _id: string;

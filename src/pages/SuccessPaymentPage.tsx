@@ -1,12 +1,14 @@
 import { IonButtons, IonContent, IonHeader, IonItem, IonLabel, IonMenuButton, IonPage, IonTitle, IonToolbar } from '@ionic/react';
 import './Page.css';
-import { useContext, useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import { confirmPayment } from '../api/SaleApi';
-import { SaleContext } from '../contexts/SaleContext';
 import { Preferences } from '@capacitor/preferences';
+import { useEffect } from 'react';
+import { ItemsProduct } from '../model/ItemsProduct';
 
 const SALE_ID = 'saleid';
+
+const CHECKOUT_LIST = 'checkoutlist';
 
 const SuccessPaymentPage: React.FC = () => {
 
@@ -18,8 +20,11 @@ const SuccessPaymentPage: React.FC = () => {
     const param2 = searchParams.get("payment_intent");
 
     const _confirmPayment = async () => {
+
         const { value } = await Preferences.get({ key: SALE_ID });
-        confirmPayment(param2, value);
+        await confirmPayment(param2, value);
+        removePreferences(CHECKOUT_LIST, []);
+        removePreferences(SALE_ID, null);
     }
 
     useEffect(() => {
@@ -27,6 +32,13 @@ const SuccessPaymentPage: React.FC = () => {
             _confirmPayment();
         }
     }, [param1, param2]);
+
+    const removePreferences = async (key: string, value: any) => {
+        await Preferences.set({
+            key: key,
+            value: JSON.stringify([]),
+        });
+    };
 
     return (
         <IonPage>
