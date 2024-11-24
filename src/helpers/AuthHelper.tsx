@@ -6,7 +6,8 @@ const URL_RESOURCE_SERVER = 'http://localhost:3000';
 
 export const logout = async () => {
     await removeGoogleJwtToken();
-    removeGoogleJwtTokenCookie(); 
+    removeGoogleJwtTokenCookie();
+    removeJwtToken();
     location.href = "/";
 }
 
@@ -20,12 +21,25 @@ export const removeGoogleJwtToken = async () => {
     return Preferences.remove({ key: 'googleJwtToken' });
 };
 
+export const removeJwtToken = async () => {
+    return Preferences.remove({ key: 'jwtToken' });
+};
+
 export const isLoggedIn = async () => {
 
-    const logged = (await getGoogleJwtToken()).value;
+    const loggedGoogle = (await getGoogleJwtToken()).value;
 
-    return logged && logged.length > 0 ? true : false;
+    const logged = (await getJwtToken()).value;
+
+    return (loggedGoogle && loggedGoogle.length > 0)
+        || (logged && logged.length > 0);
 }
+
+export const getToken = async () => {
+    
+    return (await getGoogleJwtToken()).value || (await getJwtToken()).value;
+};
+
 
 export const getGoogleJwtToken = async () => {
     return await Preferences.get({ key: 'googleJwtToken' });
@@ -35,6 +49,17 @@ export const setGoogleJwtToken = async (flag: string) => {
     await Preferences.set({
         key: 'googleJwtToken',
         value: flag,
+    });
+};
+
+export const getJwtToken = async () => {
+    return await Preferences.get({ key: 'jwtToken' });
+};
+
+export const setJwtToken = async (token: string) => {
+    await Preferences.set({
+        key: 'jwtToken',
+        value: token,
     });
 };
 

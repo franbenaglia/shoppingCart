@@ -1,22 +1,23 @@
 import axios from 'axios';
-import { getGoogleJwtToken } from '../helpers/AuthHelper';
+import { getToken } from '../helpers/AuthHelper';
 import { User } from '../model/User';
 //TODO PASS TO ENVIRONMENT
 const URL_RESOURCE_SERVER = 'http://localhost:3000';
 const baseURL = URL_RESOURCE_SERVER + "/api/v1/auth";
 
+
 export const getUser = async () => {
 
-    const token = await getGoogleJwtToken();
+    const token = await getToken();
 
     try {
-        axios.defaults.withXSRFToken = false;
-        axios.defaults.withCredentials = true;
         const response = await axios.get(baseURL + '/profileWithJustToken', {
             headers: {
                 'Authorization': 'Bearer ' + token,
                 'Content-Type': 'application/json',
-                //'crossorigin': true,
+                'Access-Control-Allow-Headers': '*',
+                'Access-Control-Allow-Methods': '*',
+                'Access-Control-Allow-Origin': '*'
             }
         });
 
@@ -27,10 +28,13 @@ export const getUser = async () => {
     }
 };
 
+
 export const registerUser = async (user: User) => {
-    //const body = JSON.stringify(user);
+
+    const body = JSON.stringify(user);
+
     try {
-        await axios.post(baseURL + '/register', { user }, {
+        return await axios.post(baseURL + '/register', body, {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Headers': '*',
@@ -44,9 +48,9 @@ export const registerUser = async (user: User) => {
 };
 
 export const login = async (user: User) => {
-    //const body = JSON.stringify(user);
+    const body = JSON.stringify(user);
     try {
-        await axios.post(baseURL + '/login', { user }, {
+        return await axios.post(baseURL + '/login', body, {
             headers: {
                 'Content-Type': 'application/json',
                 'Access-Control-Allow-Headers': '*',
@@ -56,5 +60,6 @@ export const login = async (user: User) => {
         });
     } catch (error) {
         console.error('Error creating data:', error);
+        return error;
     }
 };

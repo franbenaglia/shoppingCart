@@ -1,6 +1,6 @@
 import axios from "axios";
 import { Product } from "../model/Product";
-import { getGoogleJwtToken } from "../helpers/AuthHelper";
+import { getToken } from "../helpers/AuthHelper";
 
 const URL_RESOURCE_SERVER = 'http://localhost:3000';
 const baseURL = URL_RESOURCE_SERVER + "/product/";
@@ -8,7 +8,7 @@ const baseURL = URL_RESOURCE_SERVER + "/product/";
 
 export const handleCreate = async (newData: Product) => {
 
-    const token = await getGoogleJwtToken();
+    const token = await getToken();
 
     try {
 
