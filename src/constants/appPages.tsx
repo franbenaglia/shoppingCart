@@ -48,7 +48,7 @@ export const AppPages: AppPage[] = [
         url: '/Product',
         iosIcon: mailOutline,
         mdIcon: mailSharp,
-        role: 'both'
+        role: 'admin'
     },
     {
         title: 'ProductList',

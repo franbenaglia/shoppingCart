@@ -14,6 +14,7 @@ import { User } from '../model/User';
 import { StripeComponent } from './Stripe';
 import { SaleContext } from '../contexts/SaleContext';
 import { Preferences } from '@capacitor/preferences';
+import { getUser } from '../api/UserApi';
 
 const SALE_ID = 'saleid';
 
@@ -25,9 +26,19 @@ const Checkout: React.FC = () => {
     const [render, setRender] = useState(false);
     const clist = checkOutList();
 
+    let [userlogged, setUserlogged] = useState({ email: 'anonimo', role: 'user' });
+
+    const fetchUser = async () => {
+        const data = await getUser();
+        setUserlogged({
+            email: data.email,
+            role: data.role
+        });
+    }
+
     useEffect(() => {
-        //setSale("foo"); //funciona
-    });
+        fetchUser();
+    }, []);
 
     const deleteCart = async () => {
         deleteAllCartItems();
@@ -37,12 +48,11 @@ const Checkout: React.FC = () => {
 
         const osale: Sale = new Sale();
 
-        //TODO get from logged user service
         const user: User = new User();
-        user.login = 'user1';
+        user.email = userlogged.email;
 
         osale.user = user;
-        osale.itemProducts = clist;
+        osale.itemsProduct = clist;
 
         const data: any = (await proceedCheckOut(osale)).data;
 

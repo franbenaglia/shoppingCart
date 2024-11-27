@@ -2,10 +2,19 @@ import { createContext, useEffect, useState } from "react";
 import { ItemsProduct } from './../model/ItemsProduct';
 import { Product } from "../model/Product";
 import { Preferences } from '@capacitor/preferences';
+import { cancelled, reserved } from "../api/StockApi";
+import { Toast } from '@capacitor/toast';
 
 const CHECKOUT_LIST = 'checkoutlist';
 
 export const CartContext = createContext(null);
+
+const showToast = async (message: string) => {
+  await Toast.show({
+    text: message,
+    position: 'top'
+  });
+};
 
 export const ShoppingCartProvider = ({ children }) => {
 
@@ -28,6 +37,12 @@ export const ShoppingCartProvider = ({ children }) => {
   const checkOutList = () => cart.filter((c: ItemsProduct) => c.quantity > 0);
 
   const addItemToCart = async (product: Product) => {
+
+    const res = await reserved(product._id);
+    if (res.status !== 200) {
+      await showToast(res.data ? res.data.message : 'Error updating stock');
+      throw new Error(res.data ? res.data.message : 'Error updating stock');
+    }
 
     let ip: ItemsProduct[] = cart.filter((c: ItemsProduct) => c.product._id === product._id);
 
@@ -53,9 +68,16 @@ export const ShoppingCartProvider = ({ children }) => {
       });
       setPreferences(cart);
     }
+
   }
 
-  const deleteItemToCart = (product: Product) => {
+  const deleteItemToCart = async (product: Product) => {
+
+    const res = await cancelled(product._id);
+    if (res.status !== 200) {
+      await showToast(res.data ? res.data.message : 'Error updating stock');
+      throw new Error(res.data ? res.data.message : 'Error updating stock');
+    }
 
     let ip: ItemsProduct[] = cart.filter((c: ItemsProduct) => c.product._id === product._id);
 
@@ -75,6 +97,7 @@ export const ShoppingCartProvider = ({ children }) => {
   }
 
   const deleteAllCartItems = () => {
+    cart.forEach(ip => cancelled(ip.product._id));
     setPreferences([]);
     setCart([]);
   }

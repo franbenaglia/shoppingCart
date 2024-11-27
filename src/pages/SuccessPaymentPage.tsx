@@ -3,8 +3,10 @@ import './Page.css';
 import { useLocation } from 'react-router-dom';
 import { confirmPayment } from '../api/SaleApi';
 import { Preferences } from '@capacitor/preferences';
-import { useEffect } from 'react';
+import { useContext, useEffect } from 'react';
 import { ItemsProduct } from '../model/ItemsProduct';
+import { changeProductStateToBuyed } from '../api/StockApi';
+import { CartContext } from '../contexts/ShoppingCartContext';
 
 const SALE_ID = 'saleid';
 
@@ -13,16 +15,29 @@ const CHECKOUT_LIST = 'checkoutlist';
 const SuccessPaymentPage: React.FC = () => {
 
     //const [sale, setSale] = useContext(SaleContext);
-
+    const { checkOutList } = useContext(CartContext);
+    //const cl = checkOutList(); //  dont work why?
     const { search } = useLocation();
     const searchParams = new URLSearchParams(search);
     const param1 = searchParams.get("redirect_status");
     const param2 = searchParams.get("payment_intent");
 
+    const fetchItems = async () => {
+        let it: ItemsProduct[] = [];
+        const items = (await Preferences.get({ key: CHECKOUT_LIST })).value;
+        if (items) {
+            it = JSON.parse(items);
+        }
+        return it;
+    }
+
     const _confirmPayment = async () => {
 
         const { value } = await Preferences.get({ key: SALE_ID });
+        //TODO confirmPayment & changeProductStateToBuyed in one operation?
         await confirmPayment(param2, value);
+        const cl = await fetchItems();
+        await changeProductStateToBuyed(cl);
         removePreferences(CHECKOUT_LIST, []);
         removePreferences(SALE_ID, null);
     }
@@ -69,3 +84,5 @@ const SuccessPaymentPage: React.FC = () => {
 };
 
 export default SuccessPaymentPage;
+
+

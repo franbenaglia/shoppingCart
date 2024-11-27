@@ -21,7 +21,7 @@ const Item: React.FC = ({ visible, product, editable, quantity }: ItemProps) => 
 
     return (
         <IonCard color="light">
-            {product.imageDataBase64 && (
+            {product && product.imageDataBase64 && (
                 <IonThumbnail>
                     <img alt={product.name} src={product.imageDataBase64 as string} ></img>
                 </IonThumbnail>

@@ -16,6 +16,16 @@ export const fetchAllData = async () => {
     }
 };
 
+export const fetchDataByUser = async (userid: string) => {
+    try {
+        const response = await axios.get(baseURL + 'byuser/' + userid);
+        return response.data;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        return error;
+    }
+};
+
 
 export const proceedCheckOut = async (newData: Sale) => {
 

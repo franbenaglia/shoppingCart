@@ -69,7 +69,7 @@ const Login: React.FC = () => {
                         {errors.password && <span>Password is required</span>}
                     </IonItem>
                     <IonItem>
-                        <IonButton type="submit">Accept</IonButton>
+                        <IonButton shape="round" size="default" type="submit">Accept</IonButton>
                     </IonItem>
                     <IonItem>
                         <IonButton type="button" onClick={() => googleOauth2()} shape="round" color="medium"

@@ -10,6 +10,7 @@ import { usePhotoGallery, UserPhoto } from '../hooks/usePhotoGallery';
 import { camera } from 'ionicons/icons';
 import { ProductContext } from '../contexts/ProductContext';
 import { Toast } from '@capacitor/toast';
+import { Stock } from '../model/Stock';
 
 const showToast = async (message: string) => {
     await Toast.show({
@@ -41,11 +42,15 @@ const ProductComponent: React.FC = ({ productId }: any) => {
         }
     }, []);
 
-    const onSubmit: SubmitHandler<Product> = async (data) => { 
+    const onSubmit: SubmitHandler<Product> = async (data) => {
 
         if (photos && photos.length > 0) {
             data.imageDataBase64 = photos[0].webviewPath;
         }
+
+        const stock: Stock = new Stock();
+        stock.free = data.stockFree;
+        data.stock = stock;
 
 
         if (!productId) {
@@ -92,6 +97,14 @@ const ProductComponent: React.FC = ({ productId }: any) => {
                         {prod ? prod.price : ''}
                     </IonInput>
                     {errors.price && <span>Price is required</span>}
+                </IonItem>
+
+
+                <IonItem>
+                    <IonInput type="number" label="Stock" {...register("stockFree", { required: true })}>
+                        {(prod && prod.stock) ? prod.stock.free : ''}
+                    </IonInput>
+                    {errors.stock && <span>Stock is required</span>}
                 </IonItem>
 
                 <IonItem>
