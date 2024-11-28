@@ -12,7 +12,7 @@ import {
 
 } from '@ionic/react';
 import Item from '../components/Item';
-import { fetchAllData, fetchDataByUser } from '../api/SaleApi';
+import { fetchDataByUser } from '../api/SaleApi';
 import { useEffect, useState } from 'react';
 import { Sale } from '../model/Sale';
 import { getUser } from '../api/UserApi';
@@ -24,11 +24,9 @@ const PurchasedPage: React.FC = () => {
 
     //let [userlogged, setUserlogged] = useState('');
 
-
     const fetchSales = async () => {
         const user= await getUser();
         //setUserlogged(user._id);
-        console.log(user._id);
         const data = await fetchDataByUser(user._id);
         setSales(data);
     }

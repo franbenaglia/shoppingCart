@@ -2,7 +2,7 @@ import axios from "axios";
 import { Product } from "../model/Product";
 import { getToken } from "../helpers/AuthHelper";
 
-const URL_RESOURCE_SERVER = 'http://localhost:3000';
+const URL_RESOURCE_SERVER = import.meta.env.VITE_URL_RESOURCE_SERVER;
 const baseURL = URL_RESOURCE_SERVER + "/product/";
 
 

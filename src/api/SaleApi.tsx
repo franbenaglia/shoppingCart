@@ -2,7 +2,7 @@ import axios from "axios";
 import { getGoogleJwtToken } from "../helpers/AuthHelper";
 import { Sale } from "../model/Sale";
 
-const URL_RESOURCE_SERVER = 'http://localhost:3000';
+const URL_RESOURCE_SERVER = import.meta.env.VITE_URL_RESOURCE_SERVER;
 const baseURL = URL_RESOURCE_SERVER + "/sales/";
 
 

@@ -1,5 +1,4 @@
-import React, { useContext, useState } from 'react';
-import ReactDOM from 'react-dom';
+import { useContext, useState } from 'react';
 import { loadStripe, Stripe, StripeElementsOptions } from '@stripe/stripe-js';
 import {
     PaymentElement,
@@ -10,7 +9,10 @@ import {
 import { paymentIntent } from '../api/StripeApi';
 import { CartContext } from '../contexts/ShoppingCartContext';
 import { IonButton } from '@ionic/react';
-const URL_CLIENT = 'http://localhost:8100/SuccessPayment';
+
+const FRONT_END_SERVER = import.meta.env.VITE_FRONT_END_SERVER;
+const URL_CLIENT = FRONT_END_SERVER + '/SuccessPayment';
+const PUBLIC_KEY_STRIPE = import.meta.env.VITE_PUBLIC_KEY_STRIPE;
 
 const CheckoutForm = () => {
 
@@ -73,7 +75,7 @@ const CheckoutForm = () => {
     );
 };
 
-const stripePromise = loadStripe('pk_test_51PuNtUFLZ0CBWG9HXEqXEGIel2qw3i8a0zxacrXtu1ELzshyyYWZn3xoS7p1PoZnq1m0nfVyvYLObyRT7UUJO3Ru00xxzWGUdo');
+const stripePromise = loadStripe(PUBLIC_KEY_STRIPE);
 
 const options: StripeElementsOptions = {
     mode: 'payment',

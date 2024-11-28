@@ -1,8 +1,7 @@
 import axios from 'axios';
 import { getToken } from '../helpers/AuthHelper';
 import { User } from '../model/User';
-//TODO PASS TO ENVIRONMENT
-const URL_RESOURCE_SERVER = 'http://localhost:3000';
+const URL_RESOURCE_SERVER = import.meta.env.VITE_URL_RESOURCE_SERVER;
 const baseURL = URL_RESOURCE_SERVER + "/api/v1/auth";
 
 

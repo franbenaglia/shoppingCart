@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const URL_RESOURCE_SERVER = 'http://localhost:3000';
+const URL_RESOURCE_SERVER = import.meta.env.VITE_URL_RESOURCE_SERVER;
 
 export const paymentIntent = async (amount: number, currency: string) => {
 

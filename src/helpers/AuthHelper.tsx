@@ -1,8 +1,6 @@
 import { Preferences } from '@capacitor/preferences';
-import axios from 'axios';
-import { User } from '../model/User';
-//TODO PASS TO ENVIRONMENT
-const URL_RESOURCE_SERVER = 'http://localhost:3000';
+
+const URL_RESOURCE_SERVER = import.meta.env.VITE_URL_RESOURCE_SERVER;
 
 export const logout = async () => {
     await removeGoogleJwtToken();
@@ -36,7 +34,7 @@ export const isLoggedIn = async () => {
 }
 
 export const getToken = async () => {
-    
+
     return (await getGoogleJwtToken()).value || (await getJwtToken()).value;
 };
 

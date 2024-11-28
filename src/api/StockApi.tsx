@@ -3,7 +3,7 @@ import { ItemsProduct } from "../model/ItemsProduct";
 import { ProductStock } from "../model/ProductStock";
 import { getGoogleJwtToken } from "../helpers/AuthHelper";
 
-const URL_RESOURCE_SERVER = 'http://localhost:3000';
+const URL_RESOURCE_SERVER = import.meta.env.VITE_URL_RESOURCE_SERVER;
 const baseURL = URL_RESOURCE_SERVER + "/stock/";
 
 export const changeProductStateToBuyed = async (ips: ItemsProduct[]) => {

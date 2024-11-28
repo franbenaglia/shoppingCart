@@ -1,4 +1,4 @@
-import { IonApp, IonMenu, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
+import { IonApp, IonRouterOutlet, IonSplitPane, setupIonicReact } from '@ionic/react';
 import { IonReactRouter } from '@ionic/react-router';
 import { Redirect, Route } from 'react-router-dom';
 import Menu from './components/Menu';
@@ -56,8 +56,6 @@ setupIonicReact();
 const App: React.FC = () => {
 
   let [renderMenu, setRenderMenu] = useState(true);
-
-  let [refreshList, setRefreshList] = useState(false);
 
   const [cookies] = useCookies(['googleJwtToken']);
 

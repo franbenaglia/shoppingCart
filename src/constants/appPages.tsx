@@ -15,25 +15,19 @@ export const AppPages: AppPage[] = [
         iosIcon: mailOutline,
         mdIcon: mailSharp
     },
-    {
-        title: 'Stripe',
-        url: '/Stripe',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp
-    },
     */
     {
         title: 'Purchased',
         url: '/Purchased',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp,
+        iosIcon: paperPlaneOutline,
+        mdIcon: paperPlaneOutline,
         role: 'user'
     },
     {
         title: 'ShoppingCart',
         url: '/ShoppingCart',
-        iosIcon: mailOutline,
-        mdIcon: mailSharp,
+        iosIcon: paperPlaneSharp,
+        mdIcon: paperPlaneSharp,
         role: 'user'
     },
     {

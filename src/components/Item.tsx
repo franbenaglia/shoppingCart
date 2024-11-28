@@ -28,7 +28,7 @@ const Item: React.FC = ({ visible, product, editable, quantity }: ItemProps) => 
             )}
             <IonCardHeader>
                 <IonCardTitle>{'Product: ' + product.name} {quantity ? ' Items: ' + quantity : ''}</IonCardTitle>
-                <IonCardSubtitle>{'Price: ' + product.price}</IonCardSubtitle>
+                <IonCardSubtitle>{'Price: ' + product.price} {((visible || editable) && product.stock) ? 'Stock: ' + product.stock.free : ''}</IonCardSubtitle>
             </IonCardHeader>
             <IonCardContent>{product.description}</IonCardContent>
             {visible && <IonButton onClick={() => addItemToCart(product)}>Add Product</IonButton>}
