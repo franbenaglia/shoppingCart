@@ -45,7 +45,11 @@ const ProductComponent: React.FC = ({ productId }: any) => {
     const onSubmit: SubmitHandler<Product> = async (data) => {
 
         if (photos && photos.length > 0) {
-            data.imageDataBase64 = photos[0].webviewPath;
+            //data.imageDataBase64 = photos[0].webviewPath;
+            data.imageDataBase64 = [];
+            for (let p of photos) {
+                data.imageDataBase64.push(p.webviewPath as string & Blob);
+            }
         }
 
         const stock: Stock = new Stock();
@@ -111,6 +115,7 @@ const ProductComponent: React.FC = ({ productId }: any) => {
                     <IonTextarea label="Description"  {...register("description", { required: true })} />
                     {errors.description && <span>Description is required</span>}
                 </IonItem>
+
                 {photos && photos.length > 0 && photos.map((photo, index) => (
                     <IonItem>
                         <IonCol size="6" key={photo.filepath}>
@@ -119,13 +124,13 @@ const ProductComponent: React.FC = ({ productId }: any) => {
                     </IonItem>
                 ))}
 
-                {prod && prod.imageDataBase64 && (
+                {prod && prod.imageDataBase64.map((ph, index) => (
                     <IonItem>
-                        <IonCol size="6">
-                            <IonImg src={prod.imageDataBase64 as string} />
+                        <IonCol size="6" key={index}>
+                            <IonImg onClick={() => setPhotoToDelete(ph)} src={ph} />
                         </IonCol>
                     </IonItem>
-                )}
+                ))}
 
                 <IonItem>
                     {productId ? <IonButton type="submit">Update</IonButton> :

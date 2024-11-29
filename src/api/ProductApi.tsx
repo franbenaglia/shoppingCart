@@ -35,8 +35,16 @@ export const fetchAllData = async () => {
 };
 
 export const handleUpdate = async (updatedData: Product) => {
+
+    const token = await getToken();
+
     try {
-        return await axios.put(baseURL, { updatedData });
+        return await axios.put(baseURL, { updatedData }, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+        });
     } catch (error) {
         console.error('Error updating data:', error);
         return error;
@@ -44,8 +52,16 @@ export const handleUpdate = async (updatedData: Product) => {
 };
 
 export const handleDelete = async (id: number) => {
+
+    const token = await getToken();
+
     try {
-        return await axios.delete(baseURL + id);
+        return await axios.delete(baseURL + id, {
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json',
+            }
+        });
     } catch (error) {
         console.error('Error deleting data:', error);
         return error;

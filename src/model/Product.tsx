@@ -6,7 +6,7 @@ export class Product {
     price: number;
     imgUrl: string;
     description: string;
-    imageDataBase64: string | Blob;
+    imageDataBase64: string[] | Blob[];
     stock: Stock;
     stockFree: number;
 

@@ -66,7 +66,7 @@ const CheckoutForm = () => {
     return (
         <form onSubmit={handleSubmit}>
             <PaymentElement />
-            <IonButton type="submit" disabled={!stripe || !elements}>
+            <IonButton size="default" type="submit" disabled={!stripe || !elements}>
                 PAY
             </IonButton>
             {/* Show error message to your customers */}

@@ -7,6 +7,9 @@ import { useContext, useEffect } from 'react';
 import { ItemsProduct } from '../model/ItemsProduct';
 import { changeProductStateToBuyed } from '../api/StockApi';
 import { CartContext } from '../contexts/ShoppingCartContext';
+import { Email } from '../model/Email';
+import { sendEmail } from '../api/EmailApi';
+import { getUser } from '../api/UserApi';
 
 const SALE_ID = 'saleid';
 
@@ -38,8 +41,9 @@ const SuccessPaymentPage: React.FC = () => {
         await confirmPayment(param2, value);
         const cl = await fetchItems();
         await changeProductStateToBuyed(cl);
-        removePreferences(CHECKOUT_LIST, []);
-        removePreferences(SALE_ID, null);
+        //emailMessage(value, cl);
+        await removePreferences(CHECKOUT_LIST, []);
+        await removePreferences(SALE_ID, null);
     }
 
     useEffect(() => {
@@ -47,6 +51,20 @@ const SuccessPaymentPage: React.FC = () => {
             _confirmPayment();
         }
     }, [param1, param2]);
+
+    const emailMessage = async (saleId: string, ips: ItemsProduct[]) => {
+
+        const email: Email = new Email();
+        const data = await getUser();
+        email.to = data.email;
+        email.subject = 'Purchase Notification,  tx: ' + saleId;
+        email.text = 'Purchase Notification,  tx: ' + saleId;
+        for (let ip of ips) {
+            email.text = email.text + ' Product name: ' + ip.product.name + ', price: ' + ip.product.price;
+        }
+        await sendEmail(email);
+
+    }
 
     const removePreferences = async (key: string, value: any) => {
         await Preferences.set({

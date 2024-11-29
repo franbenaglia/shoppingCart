@@ -23,7 +23,7 @@ const Item: React.FC = ({ visible, product, editable, quantity }: ItemProps) => 
         <IonCard color="light">
             {product && product.imageDataBase64 && (
                 <IonThumbnail>
-                    <img alt={product.name} src={product.imageDataBase64 as string} ></img>
+                    <img alt={product.name} src={product.imageDataBase64[0] as string} ></img>
                 </IonThumbnail>
             )}
             <IonCardHeader>
